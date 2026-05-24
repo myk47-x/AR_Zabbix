@@ -6,6 +6,9 @@ services:
 
     image: zabbix/zabbix-server-pgsql:7.4.10-alpine
 
+    networks:
+      - backend
+
   zabbix_frontend:
 
     image: zabbix/zabbix-web-nginx-pgsql:7.4.10-alpine
