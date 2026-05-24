@@ -1,0 +1,34 @@
+name: ar_zabbix
+
+services:
+
+  zabbix_server:
+
+    image: zabbix/zabbix-server-pgsql:7.4.10-alpine
+
+  zabbix_frontend:
+
+    image: zabbix/zabbix-web-nginx-pgsql:7.4.10-alpine
+
+  zabbix_agent:
+
+    image: zabbix/zabbix-agent:7.4.10-alpine
+
+  zabbix_postgresql:
+
+    image: postgres:18.4-bookworm
+
+  zabbix_grafana:
+
+    image: grafana/grafana:13.0.1-security-01-ubuntu
+
+networks:
+
+  frontend:
+
+  backend:
+    internal: true
+
+volumes:
+
+
