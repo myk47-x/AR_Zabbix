@@ -1,10 +1,40 @@
 name: ar_zabbix
 
+
 services:
 
   zabbix_server:
 
     image: zabbix/zabbix-server-pgsql:7.4.10-alpine
+    restart: unless-stopped
+    user:
+
+    read_only: true
+
+    security_opt:
+      - no-new-privileges
+
+    cap_drop:
+      - ALL
+
+    cap_add:
+      -
+
+    tmpfs:
+      - /tmp
+
+    environment:
+
+    volumes:
+
+    healthcheck:
+
+    cpus:
+
+    mem_limit:
+
+    pids_limit:
+
 
     networks:
       - backend
@@ -12,18 +42,147 @@ services:
   zabbix_frontend:
 
     image: zabbix/zabbix-web-nginx-pgsql:7.4.10-alpine
+    restart: unless-stopped
+    user:
+
+    read_only: true
+
+    security_opt:
+      - no-new-privileges
+
+    cap_drop:
+      - ALL
+
+    cap_add:
+      -
+
+    tmpfs:
+      - /tmp
+
+    environment:
+
+    volumes:
+
+    healthcheck:
+
+    cpus:
+
+    mem_limit:
+
+    pids_limit:
+
+    networks:
+      - backend
 
   zabbix_agent:
 
     image: zabbix/zabbix-agent:7.4.10-alpine
+    restart: unless-stopped
+    user:
 
-  zabbix_postgresql:
+    read_only: true
 
-    image: postgres:18.4-bookworm
+    security_opt:
+      - no-new-privileges
+
+    cap_drop:
+      - ALL
+
+    cap_add:
+      -
+
+    tmpfs:
+      - /tmp
+
+    environment:
+
+    volumes:
+
+    healthcheck:
+
+    cpus:
+
+    mem_limit:
+
+    pids_limit:
+
+    networks:
+      - backend
+
+  zabbix_database:
+
+    image: timescale/timescaledb:2.27.1-pg18
+    restart: unless-stopped
+    user:
+
+    # dont forget:  CREATE EXTENSION IF NOT EXISTS timescaledb;
+
+    read_only: true
+
+    security_opt:
+      - no-new-privileges
+
+    cap_drop:
+      - ALL
+
+    cap_add:
+      -
+
+    tmpfs:
+      - /tmp
+
+    environment:
+
+    volumes:
+
+    healthcheck:
+
+    cpus:
+
+    mem_limit:
+
+    pids_limit:
+
+    shm_size:
+
+    networks:
+      - backend
 
   zabbix_grafana:
 
     image: grafana/grafana:13.0.1-security-01-ubuntu
+    restart: unless-stopped
+    user:
+
+    read_only: true
+
+    security_opt:
+      - no-new-privileges
+
+    cap_drop:
+      - ALL
+
+    cap_add:
+      -
+
+    tmpfs:
+      - /tmp
+
+    environment:
+
+    volumes:
+
+    healthcheck:
+
+    cpus:
+
+    mem_limit:
+
+    pids_limit:
+
+    networks:
+      - backend
+
 
 networks:
 
@@ -31,6 +190,7 @@ networks:
 
   backend:
     internal: true
+
 
 volumes:
 
