@@ -6,25 +6,25 @@ services:
 
     image: zabbix/zabbix-server-pgsql:7.4.10-alpine
     restart: unless-stopped
-    user:
+#    user:
 
-    read_only: true
+#    read_only: true
 
-    security_opt:
-      - no-new-privileges
+#    security_opt:
+#      - no-new-privileges
 
-    cap_drop:
-      - ALL
+#    cap_drop:
+#      - ALL
 
-    cap_add:
-      -
+#    cap_add:
+#      -
 
-    tmpfs:
-      - /tmp
+#    tmpfs:
+#      - /tmp
 
     environment:
 
-      DB_SERVER_HOST: zabbix_postgres
+      DB_SERVER_HOST: zabbix_database
       POSTGRES_USER: zabbix
       POSTGRES_PASSWORD: zabbix
       POSTGRES_DB: zabbix
@@ -43,41 +43,40 @@ services:
       - ./server_data/mibs:/var/lib/zabbix/mibs
       - ./server_data/export:/var/lib/zabbix/export 
 
-    healthcheck:
+#    healthcheck:
 
-    cpus:
+#    cpus:
 
-    mem_limit:
+#    mem_limit:
 
-    pids_limit:
-
+#    pids_limit:
 
     networks:
       - backend
-
+  
   zabbix_frontend:
 
     image: zabbix/zabbix-web-nginx-pgsql:7.4.10-alpine
     restart: unless-stopped
-    user:
+ #   user:
 
-    read_only: true
+#    read_only: true
 
-    security_opt:
-      - no-new-privileges
+#    security_opt:
+#      - no-new-privileges
 
-    cap_drop:
-      - ALL
+#    cap_drop:
+#      - ALL
 
-    cap_add:
-      -
+ #   cap_add:
+ #     -
 
-    tmpfs:
-      - /tmp
+  #  tmpfs:
+   #   - /tmp
 
     environment:
 
-      DB_SERVER_HOST: zabbix_postgres
+      DB_SERVER_HOST: zabbix_database
       POSTGRES_USER: zabbix
       POSTGRES_PASSWORD: zabbix
       POSTGRES_DB: zabbix
@@ -92,13 +91,13 @@ services:
       - ./frontend_data/certs:/etc/zabbix/web/certs
       - ./frontend_data/enc:/var/lib/zabbix/enc
 
-    healthcheck:
+#    healthcheck:
 
-    cpus:
+#    cpus:
 
-    mem_limit:
+#    mem_limit:
 
-    pids_limit:
+#    pids_limit:
 
     networks:
       - backend
@@ -107,21 +106,21 @@ services:
 
     image: zabbix/zabbix-agent:7.4.10-alpine
     restart: unless-stopped
-    user:
+#    user:
 
-    read_only: true
+#    read_only: true
 
-    security_opt:
-      - no-new-privileges
+#    security_opt:
+#      - no-new-privileges
 
-    cap_drop:
-      - ALL
+#    cap_drop:
+#      - ALL
 
-    cap_add:
-      -
+#    cap_add:
+#      -
 
-    tmpfs:
-      - /tmp
+#    tmpfs:
+#      - /tmp
 
     environment:
 
@@ -129,15 +128,15 @@ services:
       ZBX_PASSIVE_ALLOW: true
       ZBX_HOSTNAME: zabbix_agent
 
-    volumes:
+#    volumes:
 
-    healthcheck:
+#    healthcheck:
 
-    cpus:
+#    cpus:
 
-    mem_limit:
+#    mem_limit:
 
-    pids_limit:
+#    pids_limit:
 
     networks:
       - backend
@@ -146,23 +145,23 @@ services:
 
     image: timescale/timescaledb:2.27.1-pg18
     restart: unless-stopped
-    user: 999:999
+ #   user: 999:999
 
     # dont forget:  CREATE EXTENSION IF NOT EXISTS timescaledb;
 
-    read_only: true
+#    read_only: true
 
-    security_opt:
-      - no-new-privileges
+#    security_opt:
+#      - no-new-privileges
 
-    cap_drop:
-      - ALL
+#    cap_drop:
+#      - ALL
 
-    cap_add:
-      -
+#    cap_add:
+#      -
 
-    tmpfs:
-      - /tmp
+#    tmpfs:
+#      - /tmp
 
     environment:
 
@@ -173,15 +172,15 @@ services:
     volumes:
       - ./postgres_data:/var/lib/postgresql    
 
-    healthcheck:
+#    healthcheck:
 
-    cpus:
+#    cpus:
 
-    mem_limit:
+#    mem_limit:
 
-    pids_limit:
+#    pids_limit:
 
-    shm_size:
+#    shm_size:
 
     networks:
       - backend
@@ -190,33 +189,33 @@ services:
 
     image: grafana/grafana:13.0.1-security-01-ubuntu
     restart: unless-stopped
-    user:
+#    user:
 
-    read_only: true
+#    read_only: true
 
-    security_opt:
-      - no-new-privileges
+#    security_opt:
+#      - no-new-privileges
 
-    cap_drop:
-      - ALL
+#    cap_drop:
+#      - ALL
 
-    cap_add:
-      -
+#    cap_add:
+#      -
 
-    tmpfs:
-      - /tmp
+#    tmpfs:
+#      - /tmp
 
-    environment:
+#    environment:
 
-    volumes:
+#    volumes:
 
-    healthcheck:
+ #   healthcheck:
 
-    cpus:
+ #   cpus:
 
-    mem_limit:
+ #   mem_limit:
 
-    pids_limit:
+ #   pids_limit:
 
     networks:
       - backend
