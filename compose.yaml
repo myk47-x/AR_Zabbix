@@ -6,12 +6,11 @@ services:
 
     image: zabbix/zabbix-server-pgsql:7.4.10-alpine
     restart: unless-stopped
-#    user:
 
 #    read_only: true
 
-#    security_opt:
-#      - no-new-privileges
+    security_opt:
+      - no-new-privileges
 
 #    cap_drop:
 #      - ALL
@@ -19,8 +18,9 @@ services:
 #    cap_add:
 #      -
 
-#    tmpfs:
-#      - /tmp
+    tmpfs:
+      - /tmp
+      - /run
 
     environment:
 
@@ -45,11 +45,16 @@ services:
 
 #    healthcheck:
 
-#    cpus:
+    cpus: 2.0
 
-#    mem_limit:
+    mem_limit: 2g
 
-#    pids_limit:
+    pids_limit: 2048
+
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
 
     networks:
       - backend
@@ -58,12 +63,11 @@ services:
 
     image: zabbix/zabbix-web-nginx-pgsql:7.4.10-alpine
     restart: unless-stopped
- #   user:
 
 #    read_only: true
 
-#    security_opt:
-#      - no-new-privileges
+    security_opt:
+      - no-new-privileges
 
 #    cap_drop:
 #      - ALL
@@ -71,8 +75,9 @@ services:
  #   cap_add:
  #     -
 
-  #  tmpfs:
-   #   - /tmp
+    tmpfs:
+      - /tmp
+      - /run
 
     environment:
 
@@ -93,25 +98,31 @@ services:
 
 #    healthcheck:
 
-#    cpus:
+    cpus: 0.5
 
-#    mem_limit:
+    mem_limit: 512m
 
-#    pids_limit:
+    pids_limit: 2048
+
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+
 
     networks:
+      - frontend
       - backend
 
   zabbix_agent:
 
     image: zabbix/zabbix-agent:7.4.10-alpine
     restart: unless-stopped
-#    user:
 
 #    read_only: true
 
-#    security_opt:
-#      - no-new-privileges
+    security_opt:
+      - no-new-privileges
 
 #    cap_drop:
 #      - ALL
@@ -119,8 +130,9 @@ services:
 #    cap_add:
 #      -
 
-#    tmpfs:
-#      - /tmp
+    tmpfs:
+      - /tmp
+      - /run
 
     environment:
 
@@ -132,11 +144,16 @@ services:
 
 #    healthcheck:
 
-#    cpus:
+    cpus: 0.25
 
-#    mem_limit:
+    mem_limit: 256m
 
-#    pids_limit:
+    pids_limit: 2048
+
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
 
     networks:
       - backend
@@ -145,14 +162,14 @@ services:
 
     image: timescale/timescaledb:2.27.1-pg18
     restart: unless-stopped
- #   user: 999:999
+    user: 999:999
 
     # dont forget:  CREATE EXTENSION IF NOT EXISTS timescaledb;
 
 #    read_only: true
 
-#    security_opt:
-#      - no-new-privileges
+    security_opt:
+      - no-new-privileges
 
 #    cap_drop:
 #      - ALL
@@ -160,8 +177,9 @@ services:
 #    cap_add:
 #      -
 
-#    tmpfs:
-#      - /tmp
+    tmpfs:
+      - /tmp:mode=1777
+      - /run:uid=999,gid=999,mode=700
 
     environment:
 
@@ -174,13 +192,18 @@ services:
 
 #    healthcheck:
 
-#    cpus:
+    cpus: 2.0
 
-#    mem_limit:
+    mem_limit: 4g
 
-#    pids_limit:
+    pids_limit: 2048
 
-#    shm_size:
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+
+    shm_size: 1g
 
     networks:
       - backend
@@ -189,12 +212,11 @@ services:
 
     image: grafana/grafana:13.0.1-security-01-ubuntu
     restart: unless-stopped
-#    user:
 
 #    read_only: true
 
-#    security_opt:
-#      - no-new-privileges
+    security_opt:
+      - no-new-privileges
 
 #    cap_drop:
 #      - ALL
@@ -202,23 +224,33 @@ services:
 #    cap_add:
 #      -
 
-#    tmpfs:
-#      - /tmp
+    tmpfs:
+      - /tmp
+      - /run
 
 #    environment:
+      
+    ports:
+      - "3000:3000"
 
 #    volumes:
 
  #   healthcheck:
 
- #   cpus:
+    cpus: 0.5
 
- #   mem_limit:
+    mem_limit: 512m
 
- #   pids_limit:
+    pids_limit: 2048
+
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
 
     networks:
       - backend
+      - frontend
 
 
 networks:
