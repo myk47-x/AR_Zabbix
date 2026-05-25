@@ -1,5 +1,4 @@
 name: ar_zabbix
-  #testing nvim and git pull
 
 services:
 
@@ -25,7 +24,24 @@ services:
 
     environment:
 
+      DB_SERVER_HOST: zabbix_postgres
+      POSTGRES_USER: zabbix
+      POSTGRES_PASSWORD: zabbix
+      POSTGRES_DB: zabbix
+
     volumes:
+
+      - ./server_data/alertscripts:/usr/lib/zabbix/alertscripts
+      - ./server_data/externalscripts:/usr/lib/zabbix/externalscripts
+      - ./server_data/modules:/var/lib/zabbix/modules
+      - ./server_data/enc:/var/lib/zabbix/enc
+      - ./server_data/ssh_keys:/var/lib/zabbix/ssh_keys
+      - ./server_data/ssl/certs:/var/lib/zabbix/ssl/certs
+      - ./server_data/ssl/keys:/var/lib/zabbix/ssl/keys
+      - ./server_data/ssl/ssl_ca:/var/lib/zabbix/ssl/ssl_ca
+      - ./server_data/snmptraps:/var/lib/zabbix/snmptraps
+      - ./server_data/mibs:/var/lib/zabbix/mibs
+      - ./server_data/export:/var/lib/zabbix/export 
 
     healthcheck:
 
@@ -61,7 +77,20 @@ services:
 
     environment:
 
+      DB_SERVER_HOST: zabbix_postgres
+      POSTGRES_USER: zabbix
+      POSTGRES_PASSWORD: zabbix
+      POSTGRES_DB: zabbix
+      ZBX_SERVER_HOST: zabbix_server
+
+    ports: 
+      - "8080:8080"
+
     volumes:
+
+      - ./frontend_data/nginx:/etc/ssl/nginx
+      - ./frontend_data/certs:/etc/zabbix/web/certs
+      - ./frontend_data/enc:/var/lib/zabbix/enc
 
     healthcheck:
 
@@ -95,6 +124,10 @@ services:
       - /tmp
 
     environment:
+
+      ZBX_SERVER_HOST: zabbix_server
+      ZBX_PASSIVE_ALLOW: true
+      ZBX_HOSTNAME: zabbix_agent
 
     volumes:
 
@@ -133,7 +166,12 @@ services:
 
     environment:
 
+      POSTGRES_USER: zabbix
+      POSTGRES_PASSWORD: zabbix
+      POSTGRES_DB: zabbix
+
     volumes:
+      - ./postgres_data:/var/lib/postgresql    
 
     healthcheck:
 
@@ -194,4 +232,21 @@ networks:
 
 volumes:
 
+  postgres_data:
 
+  alertscripts:
+  externalscripts:
+  modules:
+  enc:
+  ssh_keys:
+  certs:
+  keys:
+  ssl_ca:
+  snmptraps:
+  mibs:
+  export:
+
+  nginx:
+  web_certs:
+  web_enc:
+  
