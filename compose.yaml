@@ -233,7 +233,8 @@ services:
     ports:
       - "3000:3000"
 
-#    volumes:
+    volumes:
+      - ./grafana_data:/var/lib/grafana
 
  #   healthcheck:
 
@@ -280,4 +281,5 @@ volumes:
   nginx:
   web_certs:
   web_enc:
-  
+
+  grafana_data:
