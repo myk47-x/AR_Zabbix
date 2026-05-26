@@ -25,9 +25,9 @@ services:
     environment:
 
       DB_SERVER_HOST: zabbix_database
-      POSTGRES_USER: zabbix
-      POSTGRES_PASSWORD: zabbix
-      POSTGRES_DB: zabbix
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
 
     volumes:
 
@@ -91,9 +91,9 @@ services:
     environment:
 
       DB_SERVER_HOST: zabbix_database
-      POSTGRES_USER: zabbix
-      POSTGRES_PASSWORD: zabbix
-      POSTGRES_DB: zabbix
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
       ZBX_SERVER_HOST: zabbix_server
 
     ports: 
@@ -176,8 +176,6 @@ services:
     restart: unless-stopped
     user: 999:999
 
-    # dont forget:  CREATE EXTENSION IF NOT EXISTS timescaledb;
-
 #    read_only: true
 
     security_opt:
@@ -195,9 +193,9 @@ services:
 
     environment:
 
-      POSTGRES_USER: zabbix
-      POSTGRES_PASSWORD: zabbix
-      POSTGRES_DB: zabbix
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
 
     volumes:
       - ./postgres_data:/var/lib/postgresql
