@@ -200,7 +200,8 @@ services:
       POSTGRES_DB: zabbix
 
     volumes:
-      - ./postgres_data:/var/lib/postgresql    
+      - ./postgres_data:/var/lib/postgresql
+      - ./init_db:/docker-entrypoint-initdb.d
 
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U zabbix"]
@@ -283,26 +284,3 @@ networks:
 
   backend:
     internal: true
-
-
-volumes:
-
-  postgres_data:
-
-  alertscripts:
-  externalscripts:
-  modules:
-  enc:
-  ssh_keys:
-  certs:
-  keys:
-  ssl_ca:
-  snmptraps:
-  mibs:
-  export:
-
-  nginx:
-  web_certs:
-  web_enc:
-
-  grafana_data:
