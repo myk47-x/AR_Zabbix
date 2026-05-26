@@ -19,7 +19,7 @@ services:
 #      -
 
     tmpfs:
-      - /tmp
+      - /tmp:mode=1777
       - /run
 
     environment:
@@ -43,7 +43,16 @@ services:
       - ./server_data/mibs:/var/lib/zabbix/mibs
       - ./server_data/export:/var/lib/zabbix/export 
 
-#    healthcheck:
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "10051"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+    depends_on:
+      zabbix_database:
+        condition: service_healthy
 
     cpus: 2.0
 
@@ -96,8 +105,6 @@ services:
       - ./frontend_data/certs:/etc/zabbix/web/certs
       - ./frontend_data/enc:/var/lib/zabbix/enc
 
-#    healthcheck:
-
     cpus: 0.5
 
     mem_limit: 512m
@@ -142,7 +149,12 @@ services:
 
 #    volumes:
 
-#    healthcheck:
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "10050"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
 
     cpus: 0.25
 
@@ -190,7 +202,12 @@ services:
     volumes:
       - ./postgres_data:/var/lib/postgresql    
 
-#    healthcheck:
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U zabbix"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
     cpus: 2.0
 
@@ -236,7 +253,13 @@ services:
     volumes:
       - ./grafana_data:/var/lib/grafana
 
- #   healthcheck:
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
 
     cpus: 0.5
 
