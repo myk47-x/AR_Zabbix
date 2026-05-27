@@ -7,7 +7,7 @@ datasources:
   url: http://zabbix_frontend:8080/api_jsonrpc.php
   isDefault: true
   jsonData:
-    username: zabbix
+    username: Admin
     password: zabbix
     trends: true
     cacheTTL: 1h

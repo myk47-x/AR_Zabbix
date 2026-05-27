@@ -48,17 +48,17 @@ services:
 
     volumes:
 
-      - ./server_data/alertscripts:/usr/lib/zabbix/alertscripts
-      - ./server_data/externalscripts:/usr/lib/zabbix/externalscripts
-      - ./server_data/modules:/var/lib/zabbix/modules
-      - ./server_data/enc:/var/lib/zabbix/enc
-      - ./server_data/ssh_keys:/var/lib/zabbix/ssh_keys
-      - ./server_data/ssl/certs:/var/lib/zabbix/ssl/certs
-      - ./server_data/ssl/keys:/var/lib/zabbix/ssl/keys
-      - ./server_data/ssl/ssl_ca:/var/lib/zabbix/ssl/ssl_ca
-      - ./server_data/snmptraps:/var/lib/zabbix/snmptraps
-      - ./server_data/mibs:/var/lib/zabbix/mibs
-      - ./server_data/export:/var/lib/zabbix/export 
+      - ./zabbix/server/alertscripts:/usr/lib/zabbix/alertscripts
+      - ./zabbix/server/externalscripts:/usr/lib/zabbix/externalscripts
+      - ./zabbix/server/modules:/var/lib/zabbix/modules
+      - ./zabbix/server/enc:/var/lib/zabbix/enc
+      - ./zabbix/server/ssh_keys:/var/lib/zabbix/ssh_keys
+      - ./zabbix/server/ssl/certs:/var/lib/zabbix/ssl/certs
+      - ./zabbix/server/ssl/keys:/var/lib/zabbix/ssl/keys
+      - ./zabbix/server/ssl/ssl_ca:/var/lib/zabbix/ssl/ssl_ca
+      - ./zabbix/server/snmptraps:/var/lib/zabbix/snmptraps
+      - ./zabbix/server/mibs:/var/lib/zabbix/mibs
+      - ./zabbix/server/export:/var/lib/zabbix/export 
 
     healthcheck:
       test: ["CMD", "nc", "-z", "localhost", "10051"]
@@ -84,6 +84,7 @@ services:
 
     networks:
       - backend
+      - frontend
   
   zabbix_frontend:
 
@@ -119,9 +120,9 @@ services:
 
     volumes:
 
-      - ./frontend_data/nginx:/etc/ssl/nginx
-      - ./frontend_data/certs:/etc/zabbix/web/certs
-      - ./frontend_data/enc:/var/lib/zabbix/enc
+      - ./zabbix/frontend/nginx:/etc/ssl/nginx
+      - ./zabbix/frontend/certs:/etc/zabbix/web/certs
+      - ./zabbix/frontend/enc:/var/lib/zabbix/enc
 
     cpus: 0.5
 
@@ -218,8 +219,9 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
 
     volumes:
-      - ./postgres_data:/var/lib/postgresql
-      - ./init_db:/docker-entrypoint-initdb.d
+      - ./postgres/data:/var/lib/postgresql
+      - ./postgres/init_db:/docker-entrypoint-initdb.d
+      - ./scripts:/scripts
 
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U zabbix"]
@@ -272,8 +274,8 @@ services:
       - "3000:3000"
 
     volumes:
-      - ./grafana_data/grafana:/var/lib/grafana
-      - ./grafana_data/provisioning:/etc/grafana/provisioning
+      - ./grafana/data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning/datasources
 
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
@@ -297,7 +299,6 @@ services:
     networks:
       - backend
       - frontend
-
 
 networks:
 
