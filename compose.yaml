@@ -9,14 +9,11 @@ services:
 
 #    read_only: true
 
- #   security_opt:
- #     - no-new-privileges
+    security_opt:
+      - no-new-privileges
 
-#    cap_drop:
-#      - ALL
-
-#    cap_add:
-#      -
+    cap_drop:
+      - ALL
 
     tmpfs:
       - /tmp:mode=1777
@@ -44,7 +41,6 @@ services:
       ZBX_HOUSEKEEPINGFREQUENCY: 1
       ZBX_STARTVMWARECOLLECTORS: 0
       ZBX_STARTODBCPOLLERS: 0
-
 
     volumes:
 
@@ -96,11 +92,8 @@ services:
     security_opt:
       - no-new-privileges
 
-#    cap_drop:
-#      - ALL
-
- #   cap_add:
- #     -
+    cap_drop:
+      - ALL
 
     tmpfs:
       - /tmp
@@ -135,7 +128,6 @@ services:
         soft: 65536
         hard: 65536
 
-
     networks:
       - frontend
       - backend
@@ -150,11 +142,8 @@ services:
     security_opt:
       - no-new-privileges
 
-#    cap_drop:
-#      - ALL
-
-#    cap_add:
-#      -
+    cap_drop:
+      - ALL
 
     tmpfs:
       - /tmp
@@ -201,11 +190,8 @@ services:
     security_opt:
       - no-new-privileges
 
-#    cap_drop:
-#      - ALL
-
-#    cap_add:
-#      -
+    cap_drop:
+      - ALL
 
     tmpfs:
       - /tmp:mode=1777
@@ -253,14 +239,11 @@ services:
 
 #    read_only: true
 
- #   security_opt:
- #     - no-new-privileges
+    security_opt:
+      - no-new-privileges
 
-#    cap_drop:
-#      - ALL
-
-#    cap_add:
-#      -
+    cap_drop:
+      - ALL      -
 
     tmpfs:
       - /tmp
@@ -269,6 +252,9 @@ services:
     environment:
       GF_INSTALL_PLUGINS: alexanderzobnin-zabbix-app
       TZ: America/Sao_Paulo
+      GF_ANALYTICS_CHECK_FOR_UPDATES: true
+      GF_ANALYTICS_CHECK_FOR_PLUGIN_UPDATES: true
+#      GF_SECRET_KEY:
 
     ports:
       - "3000:3000"
@@ -283,7 +269,6 @@ services:
       timeout: 10s
       retries: 5
       start_period: 30s
-
 
     cpus: 0.5
 
